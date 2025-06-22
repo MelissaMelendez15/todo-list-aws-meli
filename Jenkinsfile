@@ -19,7 +19,7 @@ pipeline {
        
        }
        
-       stage('validar en') {
+       stage('validar entorno') {
           steps {
             echo "Pipeline funcionando correctamente"
           }
