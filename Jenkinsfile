@@ -3,8 +3,8 @@ pipeline {
     agent any 
     
     
-    evironment {
-       GITHUB_TOKEN1 = credentials('GITHUB_TOKEN1')
+    environment {
+       GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
     }
 
     
@@ -13,7 +13,7 @@ pipeline {
        stage('Get Code') {
            steps {
               git branch: 'develop',
-                  url: "https://${GITHUB_TOKEN1}@github.com/MelissaMelendez15/todo-list-aws-meli.git"
+                  url: "https://${GITHUB_CREDENTIALS_MELI}@github.com/MelissaMelendez15/todo-list-aws-meli.git"
            
            }
        
