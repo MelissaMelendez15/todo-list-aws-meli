@@ -37,7 +37,7 @@ pipeline {
              recordIssues tools: [bandit(pattern: 'bandit-report.txt')]
     
             }
-       }
+        }
     
     
     }
