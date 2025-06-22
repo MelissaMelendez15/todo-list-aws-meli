@@ -2,8 +2,8 @@ pipeline {
 
     agent {
       docker {
-        image 'python:3.10'
-        args '-v /var/run/docker.sock:/var/run/docker.sock'
+        image 'melissa15/python-static-checker:1.0'
+        reuseNode true
       }
     
     }
@@ -26,7 +26,6 @@ pipeline {
        stage('Static') {
           steps {
              sh  '''
-                pip install flake8 bandit
                  echo "Ejecutando Flake8..."
                  flake8 src/ --exit-zero --format=default > flake8-report.txt || true
                  
@@ -35,6 +34,7 @@ pipeline {
              '''
              
              recordIssues tools: [flake8(pattern: 'flake8-report.txt')]
+             recordIssues tools: [bandit(pattern: 'bandit-report.txt')]
     
             }
        }
