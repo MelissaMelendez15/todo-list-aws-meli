@@ -34,6 +34,7 @@ pipeline {
              '''
              
              recordIssues tools: [flake8(pattern: 'flake8-report.txt')]
+             archiveArtifacts artifacts: 'bandit-report.txt, fingerprint:true '
     
             }
         }
