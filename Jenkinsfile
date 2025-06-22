@@ -18,6 +18,12 @@ pipeline {
            }
        
        }
+       
+       stage('validar en') {
+          steps {
+            echo "Pipeline funcionando correctamente"
+          }
+       }
     
     }
 
