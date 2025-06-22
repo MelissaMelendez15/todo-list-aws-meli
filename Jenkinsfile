@@ -4,7 +4,7 @@ pipeline {
     
     
     evironment {
-       GITHUB_TOKEN = credentials('GITHUB_TOKEN')
+       GITHUB_TOKEN1 = credentials('GITHUB_TOKEN1')
     }
 
     
@@ -13,7 +13,7 @@ pipeline {
        stage('Get Code') {
            steps {
               git branch: 'develop',
-                  url: "https://${GITHUB_TOKEN}@github.com/MelissaMelendez15/todo-list-aws-meli.git"
+                  url: "https://${GITHUB_TOKEN1}@github.com/MelissaMelendez15/todo-list-aws-meli.git"
            
            }
        
