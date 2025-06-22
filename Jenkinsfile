@@ -1,11 +1,13 @@
 pipeline {
 
-    agent any
+    agent {
       docker {
         image 'python:3.10'
         args '-v /var/run/docker.sock:/var/run/docker.sock'
-    }
+      }
     
+    }
+      
     environment {
        GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
     }
@@ -24,7 +26,7 @@ pipeline {
        stage('Static') {
           steps {
              sh  '''
-                 pip install flake8 bandit
+                pip install flake8 bandit
                  echo "Ejecutando Flake8..."
                  flake8 src/ --exit-zero --format=default > flake8-report.txt || true
                  
