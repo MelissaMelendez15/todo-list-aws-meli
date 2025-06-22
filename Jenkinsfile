@@ -34,7 +34,6 @@ pipeline {
              '''
              
              recordIssues tools: [flake8(pattern: 'flake8-report.txt')]
-             recordIssues tools: [bandit(pattern: 'bandit-report.txt')]
     
             }
         }
