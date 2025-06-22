@@ -1,14 +1,10 @@
 pipeline {
 
     agent any 
-    
-    
-    
     environment {
        GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
     }
 
-    
     stages {
     
        stage('Get Code') {
