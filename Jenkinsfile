@@ -1,12 +1,6 @@
 pipeline {
 
-    agent {
-      docker {
-        image 'melissa15/python-static-checker:1.0'
-        reuseNode true
-      }
-    
-    }
+    agent none
       
     environment {
        GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
@@ -24,6 +18,13 @@ pipeline {
        }
        
        stage('Static') {
+          agent {
+             docker {
+                 image 'melissa15/python-static-checker:1.0'
+                 reuseNode true
+            }
+        }
+          
           steps {
              sh  '''
                  echo "Ejecutando Flake8..."
@@ -34,7 +35,7 @@ pipeline {
              '''
              
              recordIssues tools: [flake8(pattern: 'flake8-report.txt')]
-             archiveArtifacts artifacts: 'bandit-report.txt, fingerprint:true '
+             archiveArtifacts artifacts: 'bandit-report.txt', fingerprint:true
     
             }
         }
@@ -43,7 +44,7 @@ pipeline {
           steps {
              sh  '''
                   echo "Usuario actual:"
-                  whoami
+                  whoami || echo "No se pudo obtner el usuario"
                   
                   echo "Ruta de SAM CLI:"
                   which sam || echo "SAM no está en el PATH"
