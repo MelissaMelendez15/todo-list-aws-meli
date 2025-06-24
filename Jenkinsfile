@@ -38,8 +38,21 @@ pipeline {
     
             }
         }
-    
-    
+
+        stage('Deploy') {
+          steps {
+             sh  '''
+                  echo "Construyendo el paquete SAM..."
+                  sam build
+
+                  echo "Validando la plantilla SAM..."
+                  sam validate
+
+                  echo "Desplegando recursos a serverlees al entorno de Staging..."
+                  sam deploy --no-fail-on-empty-changeset
+             '''
+            }
+        }
     }
 
 
