@@ -56,7 +56,7 @@ pipeline {
                   sam build
 
                   echo "Validando la plantilla SAM..."
-                  sam validate
+                  sam validate --region us-east-1
 
                   echo "Desplegando recursos a serverlees al entorno de Staging..."
                   sam deploy --no-fail-on-empty-changeset
