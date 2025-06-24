@@ -4,7 +4,7 @@ stack_name = "todo-list-aws"
 resolve_s3 = true
 s3_prefix = "todo-list-aws"
 region = "us-east-1"
-confirm_changeset = true
+confirm_changeset = false
 capabilities = "CAPABILITY_IAM"
 parameter_overrides = "Stage=\"staging\""
 image_repositories = []

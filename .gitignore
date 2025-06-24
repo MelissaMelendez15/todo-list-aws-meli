@@ -1,7 +1,45 @@
+# AWS SAM
 .aws-sam/
+.sam-logs/
+
+# Python
 __pycache__/
-.git
-tests
-pyenvunittests
+*.py[cod]
+*.pyo
+
+# Test / cobertura
+.pytest_cache/
 .coverage
 coverage.xml
+htmlcov/
+.cache/
+
+# Reportes estáticos y de seguridad
+flake8-report.txt
+bandit-report.txt
+
+# Docker
+Dockerfile.save
+
+# Jenkins y entorno
+localEnvironment.json
+
+# Entorno virtual
+venv/
+.env
+.envrc
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# VS Code / IDEs
+.vscode/
+.idea/
+
+# Git
+.git
+
+# Carpetas internas del curso
+tests/
+pyenvunittests/
