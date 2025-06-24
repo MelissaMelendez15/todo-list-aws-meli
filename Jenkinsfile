@@ -1,6 +1,6 @@
 pipeline {
 
-    agent none
+    agent { label 'master' }
       
     environment {
        GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
