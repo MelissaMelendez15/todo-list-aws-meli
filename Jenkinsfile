@@ -84,6 +84,28 @@ pipeline {
             
             }
         }
+        
+        stage('Promote') {
+          steps {
+             sh  '''
+                  echo "Promoviendo release..."
+                  
+                  git config user.name "jenkins"
+                  git config user.email "jenkins@localhost"
+                  
+                  git checkout master
+                  git checkout origin/develop --release.txt
+                  
+                  git add release.txt
+                  git commit -m "chore(release): versión marcada como release por jenkins"
+                  
+                  git push origin master
+             '''
+             
+             junit 'test-reports/pytest-report.xml'
+            
+            }
+        }
 
     
     }
