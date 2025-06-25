@@ -69,12 +69,19 @@ pipeline {
           steps {
              sh  '''
                   echo "Ejecutando pruebas de integración REST..."
+                  
+                  mkdir -p test-reports
+                  
                   docker run --rm \
                     -e BASE_URL="$BASE_URL_PROD" \
                     -v "$WORKSPACE:/app" \
                     melissa15/python-pytest:1.0 \
-                   -v test/integration/todoApiTest.py
+                   -v test/integration/todoApiTest.py \
+                   --junitxml=/app/test-reports/pytest-report.xml
              '''
+             
+             junit 'test-reports/pytest-report.xml'
+            
             }
         }
 
