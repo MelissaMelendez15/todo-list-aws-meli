@@ -87,33 +87,32 @@ pipeline {
         
         stage('Promote') {
           steps {
+          
+            withCredentials([usernamePassword(credentialsId: 'GITHUB_CREDENTIALS_MELI', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+             
              sh  '''
-                  echo "Promoviendo release..."
-                  
-                  git config user.name "jenkins"
-                  git config user.email "jenkins@localhost"
-                  
-                  echo "Cambiando a rama master..."
-                  git checkout master
-                 
-                  echo "Obteniendo el archivo release.txt desde develop..."
-                  git fetch origin develop  
-                  git checkout origin/develop -- test-reports/release.txt
-                  
-                  
-                  echo "Añadiendo y haciendo commit del archivo..."
-                  git add test-reports/release.txt
-                  git commit -m "chore(release): versión marcada como release por jenkins"
-                  
-                  echo "Pusheando a master..."
-                  git remote set-url origin https://${GITHUB_CREDENTIALS_MELI}@github.com/MelissaMelendez15/todo-list-aws-meli.git
+               echo "Promoviendo release..."
+
+               git config user.name "jenkins"
+               git config user.email "jenkins@localhost"
+
+               git checkout master
+
+               echo "Copiando release.txt desde develop..."
+               git checkout origin/develop -- test-reports/release.txt || true
+
+               if [ -f test-reports/release.txt ]; then
+                 git add test-reports/release.txt
+                 git commit -m "chore(release): versión marcada como release por jenkins" || echo "Nada que commitear"
+                 git push https://$GIT_USER:$GIT_PASS@github.com/MelissaMelendez15/todo-list-aws-meli.git master
+                else
+                 echo "release.txt no se encontró, nada que promover."
+                fi
             '''
             }
+            
+          }
         }
-
-    
     }
-
-
 
 }
