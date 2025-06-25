@@ -106,8 +106,8 @@ pipeline {
                   git commit -m "chore(release): versión marcada como release por jenkins"
                   
                   echo "Pusheando a master..."
-                  git push origin master
-             '''
+                  git remote set-url origin https://${GITHUB_CREDENTIALS_MELI}@github.com/MelissaMelendez15/todo-list-aws-meli.git
+            '''
             }
         }
 
