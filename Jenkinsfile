@@ -4,6 +4,7 @@ pipeline {
       
     environment {
        GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
+       BASE_URL_PROD = credentials('BASE_URL_PROD')
     }
 
     stages {
@@ -60,6 +61,19 @@ pipeline {
 
                   echo "Desplegando recursos a serverlees al entorno de Staging..."
                   sam deploy --no-fail-on-empty-changeset
+             '''
+            }
+        }
+        
+        stage('Rest Test') {
+          steps {
+             sh  '''
+                  echo "Ejecutando pruebas de integración REST..."
+                  docker run --rm \
+                    -e BASE_URL="$BASE_URL_PROD" \
+                    -v "$WORKSPACE:/app" \
+                    melissa15/python-pytest:1.0 \
+                   -v test/integration/todoApiTest.py
              '''
             }
         }
