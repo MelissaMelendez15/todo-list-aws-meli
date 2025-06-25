@@ -93,17 +93,21 @@ pipeline {
                   git config user.name "jenkins"
                   git config user.email "jenkins@localhost"
                   
+                  echo "Cambiando a rama master..."
                   git checkout master
-                  git checkout origin/develop -- release.txt
+                 
+                  echo "Obteniendo el archivo release.txt desde develop..."
+                  git fetch origin develop  
+                  git checkout origin/develop -- test-reports/release.txt
                   
-                  git add release.txt
+                  
+                  echo "Añadiendo y haciendo commit del archivo..."
+                  git add test-reports/release.txt
                   git commit -m "chore(release): versión marcada como release por jenkins"
                   
+                  echo "Pusheando a master..."
                   git push origin master
              '''
-             
-             junit 'test-reports/pytest-report.xml'
-            
             }
         }
 
