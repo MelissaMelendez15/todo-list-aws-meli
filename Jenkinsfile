@@ -94,7 +94,7 @@ pipeline {
                   git config user.email "jenkins@localhost"
                   
                   git checkout master
-                  git checkout origin/develop --release.txt
+                  git checkout origin/develop -- release.txt
                   
                   git add release.txt
                   git commit -m "chore(release): versión marcada como release por jenkins"
