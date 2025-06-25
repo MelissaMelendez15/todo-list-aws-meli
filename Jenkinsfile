@@ -92,22 +92,18 @@ pipeline {
              
              sh  '''
                echo "Promoviendo release..."
-
+    
                git config user.name "jenkins"
                git config user.email "jenkins@localhost"
 
                git checkout master
+               git checkout origin/develop -- test-reports/release.txt || echo "Nada que copiar"
 
-               echo "Copiando release.txt desde develop..."
-               git checkout origin/develop -- test-reports/release.txt || true
-
-               if [ -f test-reports/release.txt ]; then
-                 git add test-reports/release.txt
-                 git commit -m "chore(release): versión marcada como release por jenkins" || echo "Nada que commitear"
-                 git push https://$GIT_USER:$GIT_PASS@github.com/MelissaMelendez15/todo-list-aws-meli.git master
-                else
-                 echo "release.txt no se encontró, nada que promover."
-                fi
+               git add test-reports/release.txt || echo "Nada que agregar"
+               git commit -m "chore(release): versión marcada como release por jenkins" || echo "Nada que commitear"
+    
+               echo "Pusheando a master..."
+               git push https://${GIT_USER}:${GIT_TOKEN}@github.com/MelissaMelendez15/todo-list-aws-meli.git master
             '''
             }
             
