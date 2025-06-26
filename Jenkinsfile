@@ -126,13 +126,7 @@ pipeline {
           }
         }
         
-        stage('Debug') {
-           steps {
-             echo 'Jenkinsfile actualizado - forzando recarga'
-           }
-        }
     }
-    
     
     post {
        always {
