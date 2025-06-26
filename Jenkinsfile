@@ -116,7 +116,7 @@ pipeline {
                git checkout master
                git checkout origin/develop -- test-reports/release.txt || echo "Nada que copiar"
               
-               sh 'cat test-reports/release.txt || echo "Archivo no encontrado o vacío"'
+               cat test-reports/release.txt || echo "Archivo no encontrado o vacío"
                git add test-reports/release.txt || echo "Nada que agregar"
                git commit -m "chore(release): versión marcada como release por jenkins" || echo "Nada que commitear"
                
