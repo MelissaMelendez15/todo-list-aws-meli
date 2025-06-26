@@ -88,7 +88,10 @@ pipeline {
         stage('Promote') {
           steps {
           
-            withCredentials([usernamePassword(credentialsId: 'GITHUB_CREDENTIALS_MELI', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+            withCredentials([usernamePassword(
+               credentialsId: 'GITHUB_CREDENTIALS_MELI', 
+               usernameVariable: 'GIT_USER', 
+               passwordVariable: 'GIT_PASS')]) {
              
              sh  '''
                echo "Promoviendo release..."
@@ -103,12 +106,18 @@ pipeline {
                git commit -m "chore(release): versión marcada como release por jenkins" || echo "Nada que commitear"
     
                echo "Pusheando a master..."
-               git push https://${GIT_USER}:${GIT_TOKEN}@github.com/MelissaMelendez15/todo-list-aws-meli.git master
+               git push https://${GIT_USER}:${GIT_PASS}@github.com/MelissaMelendez15/todo-list-aws-meli.git master
             '''
             }
             
           }
         }
+    }
+    
+    post {
+       always {
+           cleanWs()
+       }
     }
 
 }
