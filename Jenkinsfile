@@ -88,12 +88,13 @@ pipeline {
         stage('Generate Release Info') {
           steps {
             script {
-              sh  '''
-                echo "Release generado automáticamente por Jenkins" > test-reports/release.txt
-                echo "Commit: $(git rev-parse HEAD)" >> test-reports/release.txt
-                echo "Fecha: $(date '+%Y-%m-%d')" >> test-reports/release.txt
-                echo "Estado: CI completo y aprobado" >> test-reports/release.txt  
-             '''
+              sh '''
+               mkdir -p test-reports
+               echo "Release generado automáticamente por Jenkins" > test-reports/release.txt
+               echo "Commit: $(git rev-parse HEAD)" >> test-reports/release.txt
+               echo "Fecha: $(date '+%Y-%m-%d')" >> test-reports/release.txt
+               echo "Estado: CI completo y aprobado" >> test-reports/release.txt  
+            '''
             }
          }
        }
