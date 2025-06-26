@@ -85,6 +85,19 @@ pipeline {
             }
         }
         
+        stage('Generate Release Info') {
+          steps {
+            script {
+              sh  '''
+                echo "Release generado automáticamente por Jenkins" > test-reports/release.txt
+                echo "Commit: $(git rev-parse HEAD)" >> test-reports/release.txt
+                echo "Fecha: $(date '+%Y-%m-%d')" >> test-reports/release.txt
+                echo "Estado: CI completo y aprobado" >> test-reports/release.txt  
+             '''
+            }
+         }
+       }
+        
         stage('Promote') {
           steps {
           
@@ -98,18 +111,15 @@ pipeline {
                git config user.name "jenkins"
                git config user.email "jenkins@localhost"
                
-               
-               echo "Release generado automáticamente por Jenkins" > test-reports/release.txt
-               echo "Commit: $(git rev-parse HEAD)" >> test-reports/release.txt
-               echo "Fecha: $(date '+%Y-%m-%d')" >> test-reports/release.txt
-               echo "Estado: CI completo y aprobado" >> test-reports/release.txt
-
                git checkout master
                git checkout origin/develop -- test-reports/release.txt || echo "Nada que copiar"
+              
                git add test-reports/release.txt || echo "Nada que agregar"
                git commit -m "chore(release): versión marcada como release por jenkins" || echo "Nada que commitear"
+               
                echo "Pusheando a master..."
                git push https://${GIT_USER}:${GIT_PASS}@github.com/MelissaMelendez15/todo-list-aws-meli.git master
+            
             '''
             }
             
