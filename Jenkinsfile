@@ -88,16 +88,17 @@ pipeline {
         stage('Generate Release Info') {
           steps {
             script {
-              sh '''
-               mkdir -p test-reports
-               echo "Release generado automáticamente por Jenkins" > test-reports/release.txt
-               echo "Commit: $(git rev-parse HEAD)" >> test-reports/release.txt
-               echo "Fecha: $(date '+%Y-%m-%d')" >> test-reports/release.txt
-               echo "Estado: CI completo y aprobado" >> test-reports/release.txt  
-            '''
-            }
-         }
-       }
+              def commitId = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
+              def fecha = sh(script: "date '+%Y-%m-%d'", returnStdout: true).trim()
+              writeFile file: 'test-reports/release.txt', text: """\
+        Release generado automáticamente por Jenkins
+        Commit: ${commitId}
+        Fecha: ${fecha}
+        Estado: CI completo y aprobado
+        """
+        }
+      }
+    }
         
         stage('Promote') {
           steps {
