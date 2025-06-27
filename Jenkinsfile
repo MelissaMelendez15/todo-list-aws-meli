@@ -20,7 +20,7 @@ pipeline {
             
              sh '''
                 echo "Clonando configuración de producción..."
-                git clone --branch production https://github.com/MelissaMelendez15/todo-list-aws-config.git config-repo
+                git clone --branch production https://${GITHUB_CREDENTIALS_MELI}@github.com/MelissaMelendez15/todo-list-aws-config.git config-repo
                 cp config-repo/samconfig.toml .
              '''
           }
