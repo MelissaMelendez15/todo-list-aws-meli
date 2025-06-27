@@ -7,6 +7,7 @@ pipeline {
    
    stages {
       stage('Get Code'){
+        // Etapa Get Code
           steps {
              git branch: 'master'
                  url: "https://${GITHUB_CREDENTIALS_MELI}@github.com/MelissaMelendez15/todo-list-aws-meli.git"
@@ -17,8 +18,7 @@ pipeline {
                 cp config-repo/samconfig.toml .
              '''
           }
-      
-      } 
+        } 
     }
 
 }
