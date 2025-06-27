@@ -19,9 +19,7 @@ pipeline {
             ])
             
              sh '''
-                echo "Descargando samconfig.toml desde rama production..."
-                git fetch origin production
-                git show origin/production:samconfig.toml  > samconfig.toml
+                echo "El archivo samconfig.toml ya está presente en la rama master"
              '''
           }
         } 
