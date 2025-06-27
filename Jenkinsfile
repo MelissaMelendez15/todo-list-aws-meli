@@ -6,6 +6,7 @@ pipeline {
    }
    
    stages {
+      
       stage('Get Code'){
          steps {
             checkout([
@@ -18,9 +19,6 @@ pipeline {
             
             ])
             
-             sh '''
-                echo "El archivo samconfig.toml ya está presente en la rama master"
-             '''
           }
         } 
     }
