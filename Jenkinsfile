@@ -7,7 +7,7 @@ pipeline {
    
    stages {
       stage('Get Code'){
-          steps {
+         steps {
              git branch: 'master'
                  url: "https://${GITHUB_CREDENTIALS_MELI}@github.com/MelissaMelendez15/todo-list-aws-meli.git"
              
