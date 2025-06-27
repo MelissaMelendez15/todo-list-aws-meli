@@ -10,7 +10,7 @@ pipeline {
          steps {
             git(
                 branch: 'master',
-                credentialsId: 'GITHUB_CREDENTIALS_MELI'
+                credentialsId: 'GITHUB_CREDENTIALS_MELI',
                 url: 'https://github.com/MelissaMelendez15/todo-list-aws-meli.git'
             )
              
