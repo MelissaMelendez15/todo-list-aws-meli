@@ -1,15 +1,18 @@
 pipeline { 
    agent any 
    
-   enviroment {
+   environment {
        GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
    }
    
    stages {
       stage('Get Code'){
          steps {
-             git branch: 'master'
-                 url: "https://${GITHUB_CREDENTIALS_MELI}@github.com/MelissaMelendez15/todo-list-aws-meli.git"
+            git(
+                branch: 'master',
+                credentialsId: 'GITHUB_CREDENTIALS_MELI'
+                url: 'https://github.com/MelissaMelendez15/todo-list-aws-meli.git'
+            )
              
              sh '''
                 echo "Clonando configuración de producción..."
