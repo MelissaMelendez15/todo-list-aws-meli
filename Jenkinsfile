@@ -19,9 +19,9 @@ pipeline {
             ])
             
              sh '''
-                echo "Clonando configuración de producción..."
-                git clone --branch production https://${GITHUB_CREDENTIALS_MELI}@github.com/MelissaMelendez15/todo-list-aws-config.git config-repo
-                cp config-repo/samconfig.toml .
+                echo "Descargando samconfig.toml desde rama production..."
+                git fetch origin production
+                git show origin/production:samconfig.toml  > samconfig.toml
              '''
           }
         } 
