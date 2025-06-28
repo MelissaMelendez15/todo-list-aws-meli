@@ -3,10 +3,10 @@ pipeline {
    
    environment {
        GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
+       STAGE = 'production'
    }
    
    stages {
-      
       stage('Get Code'){
          steps {
             checkout([
@@ -41,7 +41,7 @@ pipeline {
                   sam validate --region us-east-1
 
                   echo "Desplegando recursos a serverlees al entorno de PRODUCCIÓN..."
-                  sam deploy --no-fail-on-empty-changeset
+                  sam deploy --no-fail-on-empty-changeset --parameter-overrides Stage =$STAGE
                '''
             }
          }
