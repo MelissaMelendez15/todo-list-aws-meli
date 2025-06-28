@@ -5,6 +5,7 @@ pipeline {
     environment {
        GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
        BASE_URL_PROD = credentials('BASE_URL_PROD')
+       STAGE = 'staging'
     }
 
     stages {
@@ -66,7 +67,7 @@ pipeline {
                   sam validate --region us-east-1
 
                   echo "Desplegando recursos a serverlees al entorno de Staging..."
-                  sam deploy --no-fail-on-empty-changeset
+                  sam deploy --no-fail-on-empty-changeset --parameter-overrides Stage=$STAGE
              '''
             }
         }
