@@ -3,6 +3,7 @@ pipeline {
    
    environment {
        GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
+       BASE_URL_PROD = credentials('BASE_URL_PROD')
        STAGE = 'production'
    }
    
