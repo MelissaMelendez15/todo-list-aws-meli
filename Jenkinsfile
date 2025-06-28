@@ -8,11 +8,16 @@ pipeline {
     }
 
     stages {
-    
        stage('Get Code') {
            steps {
-              git branch: 'develop',
-                  url: "https://${GITHUB_CREDENTIALS_MELI}@github.com/MelissaMelendez15/todo-list-aws-meli.git"
+              checkout([
+                $class: 'GitSCM',
+                branches:[[name: '*/develop']],
+                userRemoteConfigs: [[
+                   url: 'https://github.com/MelissaMelendez15/todo-list-aws-meli.git'
+                   credentialsId: 'GITHUB_CREDENTIALS_MELI'
+                ]]
+              ])
            
            }
        
