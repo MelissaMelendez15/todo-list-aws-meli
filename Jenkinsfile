@@ -14,7 +14,7 @@ pipeline {
                 $class: 'GitSCM',
                 branches:[[name: '*/develop']],
                 userRemoteConfigs: [[
-                   url: 'https://github.com/MelissaMelendez15/todo-list-aws-meli.git'
+                   url: 'https://github.com/MelissaMelendez15/todo-list-aws-meli.git',
                    credentialsId: 'GITHUB_CREDENTIALS_MELI'
                 ]]
               ])
