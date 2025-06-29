@@ -32,6 +32,7 @@ pipeline {
             sh '''
               echo "Código descargado desde rama master y stashed con éxito"
               ls -l
+            
             '''
         }
         
