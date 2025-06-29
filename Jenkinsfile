@@ -34,7 +34,8 @@ pipeline {
         }
           
           steps {
-             sh  '''
+             
+            sh  '''
                  echo "Ejecutando Flake8..."
                  flake8 src/ --exit-zero --format=default > flake8-report.txt || true
                  
