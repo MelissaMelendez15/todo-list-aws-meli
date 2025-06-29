@@ -1,0 +1,59 @@
+pipeline { 
+   agent any 
+   
+   environment {
+       GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
+       BASE_URL_PROD = credentials('BASE_URL_PROD')
+       STAGE = 'production'
+   }
+   
+   stages {
+      stage('Get Code'){
+         agent {
+            docker {
+               image 'melissa15/samcli-agent:1.3'
+               reuseNode true
+            }
+         }
+        
+         steps {
+            checkout([
+               $class: 'GitSCM',
+               branches: [[name: '*/master']],
+               userRemoteConfigs: [[
+                   url: 'https://github.com/MelissaMelendez15/todo-list-aws-meli.git',
+                   credentialsId: 'GITHUB_CREDENTIALS_MELI'
+               ]]
+            
+            ])
+            
+            stash name: 'workspace-stashed', includes: '**'
+            
+            sh '''
+              echo "Código descargado desde rama master y stashed con éxito"
+              ls -l
+            '''
+        }
+        
+       }
+        
+    }
+      
+   }
+   
+  steps {
+      checkout([
+         $class: 'GitSCM',
+         branches: [[name: '*/master']],
+         userRemoteConfigs: [[
+            url: 'https://github.com/MelissaMelendez15/todo-list-aws-meli.git',
+            credentialsId: 'GITHUB_CREDENTIALS_MELI'
+         ]]
+      ])
+
+      stash name: 'workspace-stashed', includes: '**'
+
+      sh '''
+         echo "Código descargado desde rama master y stashed con éxito"
+         ls -l
+      '''
