@@ -73,11 +73,12 @@ pipeline {
               docker {
                  image 'melissa15/python-pytest:1.4'
                  reuseNode true
+                 args '--entrypoint=""'
                 }
             }
             
             environment {
-               BASE_URL = credentials('BASE_URL_PROD')
+               BASE_URL = "${BASE_URL_PROD}"
             }
             
             steps {
@@ -85,7 +86,7 @@ pipeline {
                
                sh '''
                   echo "URL del entorno serverless:"
-                  echo $BASE_URL
+                   echo "$BASE_URL"
 
                   mkdir -p test-reports
 
