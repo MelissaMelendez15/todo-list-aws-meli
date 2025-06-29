@@ -1,0 +1,54 @@
+pipeline {
+
+    agent none
+      
+    environment {
+       GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
+       BASE_URL_PROD = credentials('BASE_URL_PROD')
+       STAGE = 'staging'
+    
+    }
+
+    stages {
+       stage('Get Code') {
+          agent {
+             docker {
+                 image 'melissa15/samcli-agent:1.0'
+                 reuseNode true
+            }
+          
+          }
+          
+          steps {
+              checkout([
+                $class: 'GitSCM',
+                branches:[[name: '*/develop']],
+                userRemoteConfigs: [[
+                   url: 'https://github.com/MelissaMelendez15/todo-list-aws-meli.git',
+                   credentialsId: 'GITHUB_CREDENTIALS_MELI'
+                ]]
+              ])
+              
+              stash name: 'source-code', includes: '**'
+              
+              sh '''
+                 echo "Archivos descargados y stashed:"
+                 
+                 ls -l
+              
+              '''
+           
+           }
+       
+       }
+       
+        
+    }
+    
+    post {
+       always {
+           cleanWs()
+       }
+    }
+
+}
