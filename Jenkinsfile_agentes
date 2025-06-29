@@ -41,19 +41,5 @@ pipeline {
       
    }
    
-  steps {
-      checkout([
-         $class: 'GitSCM',
-         branches: [[name: '*/master']],
-         userRemoteConfigs: [[
-            url: 'https://github.com/MelissaMelendez15/todo-list-aws-meli.git',
-            credentialsId: 'GITHUB_CREDENTIALS_MELI'
-         ]]
-      ])
-
-      stash name: 'workspace-stashed', includes: '**'
-
-      sh '''
-         echo "Código descargado desde rama master y stashed con éxito"
-         ls -l
-      '''
+  
+     
