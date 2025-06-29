@@ -42,22 +42,19 @@ pipeline {
        
        }
        
-        
-    }
-    
-    post {
-       always {
-           agent {
-              docker {
+       stage ('Clean Workspace') {
+          agent {
+             docker {
                  image 'melissa15/cleaner-agent:1.0'
                  reuseNode true
                 }
             }
+       
             steps {
-               echo "Limpiando Worspace con agente personalizado"
+               echo 'Limpiando Workspace con agente personalizado'
                cleanWs()
             }
         }
+       
     }
-
 }
