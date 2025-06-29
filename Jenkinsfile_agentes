@@ -1,6 +1,7 @@
 pipeline {
 
     agent none
+    
     environment {
        GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
        BASE_URL_PROD = credentials('BASE_URL_PROD')
@@ -70,29 +71,30 @@ pipeline {
         stage('Rest Test') {
            agent {
               docker {
-                 image 'melissa15/python-pytest:1.1'
-                 args  '-e BASE_URL=$BASE_URL_PROD'
+                 image 'melissa15/python-pytest:1.4'
                  reuseNode true
                 }
+            }
+            
+            environment {
+               BASE_URL = credentials('BASE_URL_PROD')
             }
             
             steps {
                unstash 'workspace-stashed'
                
-               sh  '''
+               sh '''
                   echo "URL del entorno serverless:"
                   echo $BASE_URL
-                  
+
                   mkdir -p test-reports
-                  
+
                   pytest -v test/integration/todoApiTest.py \
-                   --junitxml=test-reports/pytest-report.xml || true
-                
-             '''
+                         --junitxml=test-reports/pytest-report.xml
+               '''
              
-             junit 'test-reports/pytest-report.xml'
+               junit 'test-reports/pytest-report.xml'
                
-            
             }
         }
 
