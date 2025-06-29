@@ -132,7 +132,48 @@ pipeline {
                
             }
         }
-
+        
+        
+       stage('Promote') {
+          agent {
+             docker {
+               image 'melissa15/samcli-agent:1.3'
+               reuseNode true
+            }
+          
+          }
+       
+          steps {
+          
+            withCredentials([usernamePassword(
+               credentialsId: 'GITHUB_CREDENTIALS_MELI', 
+               usernameVariable: 'GIT_USER', 
+               passwordVariable: 'GIT_PASS')]) {
+               
+               unstash 'workspace-stashed'
+               
+               sh  '''
+                 echo "Promoviendo release..."
+                 git config user.name "jenkins"
+                 git config user.email "jenkins@localhost"
+               
+                 git checkout master
+                 git checkout origin/develop -- test-reports/release.txt || echo "Nada que copiar"
+              
+              
+                 git add test-reports/release.txt || echo "Nada que agregar"
+                 git commit -m "chore(release): versión marcada como release por jenkins" || echo "Nada que commitear"
+               
+                 echo "Pusheando a master..."
+                 git push https://${GIT_USER}:${GIT_PASS}@github.com/MelissaMelendez15/todo-list-aws-meli.git master
+             
+                 echo "Etapa Promote finalizada"
+               '''
+            }
+            
+          }
+        }
+       
        
        stage ('Clean Workspace') {
           agent {
