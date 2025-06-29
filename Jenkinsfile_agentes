@@ -71,7 +71,7 @@ pipeline {
         stage('Deploy') {
           agent {
             docker {
-              image 'melissa15/python-samcli:1.0'
+              image 'melissa15/samcli-agent:1.0'
               reuseNode true
             }
           
