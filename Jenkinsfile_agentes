@@ -73,10 +73,57 @@ pipeline {
              '''
             }
          }
-      
+         
+         stage('Rest Test') {
+            agent {
+               docker {
+                  image 'melissa15/python-pytest:1.4'
+                  reuseNode true
+                  args '--entrypoint=""'
+               }
+            }
+            
+            environment {
+               BASE_URL = "${BASE_URL_PROD}"
+            }
+            
+            steps {
+               
+               unstash 'workspace-stashed'
+               
+               sh '''
+                  echo "Ejecutando pruebas de integración REST solo LECTURA (GET)..."
+                  
+                  mkdir -p test-reports
+                  
+                  
+                  pytest -v test/integration/todoApiReadOnlyTest.py \
+                   --junitxml=test-reports/pytest-report.xml
+                
+                '''
+                 
+                junit 'test-reports/pytest-report.xml'
+            
+            }
+        
+        }
+        
+        stage ('Clean Workspace') {
+          agent {
+             docker {
+                 image 'melissa15/cleaner-agent:1.0'
+                 reuseNode true
+                }
+            }
+       
+            steps {
+               echo 'Limpiando Workspace con agente personalizado'
+               cleanWs()
+            }
+        }
+       
+      }
     }
-      
-   }
    
   
      
