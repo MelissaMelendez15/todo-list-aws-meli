@@ -17,6 +17,19 @@ class TestApi(unittest.TestCase):
     def setUp(self):
         self.assertIsNotNone(BASE_URL, "URL no configurada")
         self.assertTrue(len(BASE_URL) > 8, "URL no configurada")
+        
+        # Crear un TODO si no existen
+        response = requests.get(BASE_URL + "/todos")
+        todos = response.json()
+    
+        if not todos:
+           payload = {
+               "text": "Tarea de prueba creada por Jenkins",
+               "checked": False
+        }
+        create_response = requests.post(BASE_URL + "/todos", json=payload)
+        print(f"TODO creado por Jenkins, status: {create_response.status_code}")
+        assert create_response.status_code == 200
 
     def test_api_gettodo(self):
         print('---------------------------------------')
