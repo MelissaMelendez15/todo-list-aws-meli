@@ -47,8 +47,17 @@ pipeline {
     
     post {
        always {
-           cleanWs()
-       }
+           agent {
+              docker {
+                 image 'melissa15/cleaner-agent:1.0'
+                 reuseNode true
+                }
+            }
+            steps {
+               echo "Limpiando Worspace con agente personalizado"
+               cleanWs()
+            }
+        }
     }
 
 }
