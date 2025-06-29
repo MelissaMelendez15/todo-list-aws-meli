@@ -28,7 +28,7 @@ pipeline {
                 ]]
               ])
               
-              stash name: 'source-code', includes: '**'
+              stash name: 'workspace-stashed', includes: '**'
               
               sh '''
                  echo "Archivos descargados y stashed:"
@@ -40,6 +40,62 @@ pipeline {
            }
        
        }
+       
+       stage('Static') {
+          agent {
+             docker {
+                 image 'melissa15/python-static-checker:1.0'
+                 reuseNode true
+            }
+        }
+          
+          steps {
+             
+             unstash 'workspace-stashed'
+             
+             sh  '''
+                 echo "Ejecutando Flake8..."
+                 flake8 src/ --exit-zero --format=default > flake8-report.txt || true
+                 
+                 echo "Ejecutando Bandit..."
+                 bandit -r src/ -f txt -o bandit-report.txt || true
+             '''
+             
+             recordIssues tools: [flake8(pattern: 'flake8-report.txt')]
+             archiveArtifacts artifacts: 'bandit-report.txt', fingerprint:true
+    
+            }
+        }
+        
+        stage('Rest Test') {
+           agent {
+              docker {
+                 image 'melissa15/python-pytest:1.1'
+                 args  '-e BASE_URL=$BASE_URL_PROD'
+                 reuseNode true
+                }
+            }
+            
+            steps {
+               unstash 'workspace-stashed'
+               
+               sh  '''
+                  echo "URL del entorno serverless:"
+                  echo $BASE_URL
+                  
+                  mkdir -p test-reports
+                  
+                  pytest -v test/integration/todoApiTest.py \
+                   --junitxml=test-reports/pytest-report.xml || true
+                
+             '''
+             
+             junit 'test-reports/pytest-report.xml'
+               
+            
+            }
+        }
+
        
        stage ('Clean Workspace') {
           agent {
