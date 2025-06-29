@@ -26,7 +26,7 @@ class TestApi(unittest.TestCase):
            payload = {
                "text": "Tarea de prueba creada por Jenkins",
                "checked": False
-        }
+           }
         create_response = requests.post(BASE_URL + "/todos", json=payload)
         print(f"TODO creado por Jenkins, status: {create_response.status_code}")
         assert create_response.status_code == 200
