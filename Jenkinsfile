@@ -20,8 +20,14 @@ pipeline {
                    credentialsId: 'GITHUB_CREDENTIALS_MELI'
                 ]]
               ])
-           
-           }
+              
+              sh '''
+                echo "Descargando configuración desde repo externo..."
+                curl -o samconfig.toml https://raw.githubusercontent.com/MelissaMelendez15/todo-list-aws-config/staging/samconfig.toml
+                echo "Contenido del samconfig.toml descargando:"
+                cat samconfig.toml
+              '''
+            }
        
        }
        
