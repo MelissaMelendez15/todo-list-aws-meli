@@ -114,6 +114,9 @@ pipeline {
                git config user.name "jenkins"
                git config user.email "jenkins@localhost"
                
+               echo "Descartando cambios locales..."
+               git reset --hard HEAD
+               
                git checkout master
                git checkout origin/develop -- test-reports/release.txt || echo "Nada que copiar"
               
