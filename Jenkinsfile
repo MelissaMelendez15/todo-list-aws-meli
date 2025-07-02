@@ -27,7 +27,6 @@ pipeline {
                echo "Contenido del samconfig.toml descargado:"
                ls -l samconfig.*
                cat samconfig.toml
-            
             '''
             
           }
