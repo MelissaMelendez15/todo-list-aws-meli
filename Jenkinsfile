@@ -20,6 +20,16 @@ pipeline {
             
             ])
             
+            sh '''
+               echo "Descargando configuración desde repo externo (production)..."
+               curl -o samconfig.toml https://raw.githubusercontent.com/MelissaMelendez15/todo-list-aws-config/production/samconfig.toml
+            
+               echo "Contenido del samconfig.toml descargado:"
+               ls -l samconfig.*
+               cat samconfig.toml
+            
+            '''
+            
           }
         }
         
