@@ -1,6 +1,10 @@
 pipeline {
 
     agent none
+
+    options {
+       skipDefaultCheckout(true)
+    }
     
     environment {
        GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
@@ -105,7 +109,7 @@ pipeline {
                sam validate --region us-east-1
 
                echo "Desplegando recursos a serverlees al entorno de Staging..."
-               sam deploy --no-fail-on-empty-changeset --parameter-overrides Stage=$STAGE || echo "No hay cambios que desplegar"
+               sam deploy --no-fail-on-empty-changeset || echo "No hay cambios que desplegar"
              '''
             }
         }
