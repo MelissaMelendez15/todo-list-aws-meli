@@ -34,7 +34,8 @@ pipeline {
                 curl -o samconfig.toml https://raw.githubusercontent.com/MelissaMelendez15/todo-list-aws-config/staging/samconfig.toml
                 
                 echo "Contenido del samconfig.toml descargado:"
-                cat samconfig.tol
+                ls -l samconfig.*
+                cat samconfig.toml
               '''
               
               stash name: 'workspace-stashed', includes: '**'
@@ -163,6 +164,9 @@ pipeline {
                  echo "Promoviendo release..."
                  git config user.name "jenkins"
                  git config user.email "jenkins@localhost"
+                 
+                 echo "Descargando cambios locales..."
+                 git reset --hard HEAD
                
                  git checkout master
                  git checkout origin/develop -- test-reports/release.txt || echo "Nada que copiar"
