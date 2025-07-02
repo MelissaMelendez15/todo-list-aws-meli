@@ -29,16 +29,21 @@ pipeline {
                 ]]
               ])
               
+              sh '''
+                echo "Descargando configuración desde repo externo (staging)..."
+                curl -o samconfig.toml https://raw.githubusercontent.com/MelissaMelendez15/todo-list-aws-config/staging/samconfig.toml
+                
+                echo "Contenido del samconfig.toml descargado:"
+                cat samconfig.tol
+              '''
+              
               stash name: 'workspace-stashed', includes: '**'
               
               sh '''
                  echo "Archivos descargados y stashed:"
-                 
                  ls -l
-              
               '''
-           
-           }
+            }
        
        }
        
