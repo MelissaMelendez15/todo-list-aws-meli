@@ -81,44 +81,12 @@ pipeline {
                   sam deploy --no-fail-on-empty-changeset --parameter-overrides Stage=$STAGE
              '''
             }
-<<<<<<<<< saved version
-        stage('Deploy') {
-          
-          steps {
-             sh  '''
-                  echo "Usuario actual:"
-                  whoami || echo "No se pudo obtner el usuario"
-                  
-                  echo "Ruta de SAM CLI:"
-                  which sam || echo "SAM no está en el PATH"
-                  
-                  echo "Probando versión de SAM:"
-                  sam --version || echo "SAM no funciona aquí"
-                  
-                  echo "Construyendo el paquete SAM..."
-                  sam build
-
-                  echo "Validando la plantilla SAM..."
-                  sam validate --region us-east-1
-
-                  echo "Desplegando recursos a serverlees al entorno de Staging..."
-                  sam deploy --no-fail-on-empty-changeset --parameter-overrides Stage=$STAGE
-             '''
-            }
         }
         
         stage('Rest Test') {
-          steps {
-             sh  '''
-                  echo "Ejecutando pruebas de integración REST..."
-=========
-         }
-         
-         stage('Rest Test') {
             steps {
                sh '''
                   echo "Ejecutando pruebas de integración REST solo LECTURA (GET)..."
->>>>>>>>> local version
                   
                   mkdir -p test-reports
                   
