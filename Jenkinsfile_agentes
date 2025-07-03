@@ -17,7 +17,7 @@ pipeline {
        stage('Get Code') {
           agent {
              docker {
-                 image 'melissa15/samcli-agent:1.5'
+                 image 'melissa15/samcli-agent:1.6'
                  reuseNode true
             }
           
@@ -87,7 +87,7 @@ pipeline {
         stage('Deploy') {
           agent {
             docker {
-              image 'melissa15/samcli-agent:1.5'
+              image 'melissa15/samcli-agent:1.6'
               reuseNode true
             }
           
@@ -166,7 +166,7 @@ pipeline {
        stage('Promote') {
           agent {
              docker {
-               image 'melissa15/samcli-agent:1.5'
+               image 'melissa15/samcli-agent:1.6'
                reuseNode true
             }
           
