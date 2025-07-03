@@ -215,7 +215,7 @@ pipeline {
        stage ('Clean Workspace') {
           agent {
              docker {
-                 image 'melissa15/cleaner-agent:1.0'
+                 image 'melissa15/cleaner-agent:1.1'
                  reuseNode true
                 }
             }
