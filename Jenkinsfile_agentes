@@ -61,6 +61,12 @@ pipeline {
              unstash 'workspace-stashed'
              
              sh  '''
+                 echo "===INFO STATIC==="
+                 echo "Usuario: $(whoami)"
+                 echo "Host: $(hostname)"
+                 echo "WORKSPACE: ${WORKSPACE}"
+                 
+                 
                  echo "Ejecutando Flake8..."
                  flake8 src/ --exit-zero --format=default > flake8-report.txt || true
                  
@@ -91,9 +97,15 @@ pipeline {
               
               echo "Usuario actual:"
               whoami || echo "No se pudo obtner el usuario"
+             
+              echo "Nombre del host:"
+              hostname ||echo "No se pudo obtner el hostname"
                   
                echo "Ruta de SAM CLI:"
                which sam || echo "SAM no está en el PATH"
+               
+               echo "Ruta actual de trabajo:"
+               echo "${WORKSPACE}"
                   
                echo "Probando versión de SAM:"
                sam --version || echo "SAM no funciona aquí"
@@ -128,9 +140,14 @@ pipeline {
                
                sh '''
                   echo "URL del entorno serverless:"
-                   echo "$BASE_URL"
+                  echo "$BASE_URL"
 
                   mkdir -p test-reports
+                  
+                 echo "===INFO REST TEST==="
+                 echo "Usuario: $(whoami)"
+                 echo "Host: $(hostname)"
+                 echo "WORKSPACE: ${WORKSPACE}"
 
                   pytest -v test/integration/todoApiTest.py \
                          --junitxml=test-reports/pytest-report.xml
@@ -160,25 +177,30 @@ pipeline {
                
                unstash 'workspace-stashed'
                
-               sh  '''
-                 echo "Promoviendo release..."
-                 git config user.name "jenkins"
-                 git config user.email "jenkins@localhost"
+               sh '''
+                  echo "===INFO PROMOTE==="
+                  echo "Usuario: $(whoami)"
+                  echo "Host: $(hostname)"
+                  echo "WORKSPACE: ${WORKSPACE}"
                  
-                 echo "Descargando cambios locales..."
-                 git reset --hard HEAD
+                  echo "Promoviendo release..."
+                  git config user.name "jenkins"
+                  git config user.email "jenkins@localhost"
+                 
+                  echo "Descargando cambios locales..."
+                  git reset --hard HEAD
                
-                 git checkout master
-                 git checkout origin/develop -- test-reports/release.txt || echo "Nada que copiar"
+                  git checkout master
+                  git checkout origin/develop -- test-reports/release.txt || echo "Nada que copiar"
               
               
-                 git add test-reports/release.txt || echo "Nada que agregar"
-                 git commit -m "chore(release): versión marcada como release por jenkins" || echo "Nada que commitear"
+                  git add test-reports/release.txt || echo "Nada que agregar"
+                  git commit -m "chore(release): versión marcada como release por jenkins" || echo "Nada que commitear"
                
-                 echo "Pusheando a master..."
-                 git push https://${GIT_USER}:${GIT_PASS}@github.com/MelissaMelendez15/todo-list-aws-meli.git master
+                  echo "Pusheando a master..."
+                  git push https://${GIT_USER}:${GIT_PASS}@github.com/MelissaMelendez15/todo-list-aws-meli.git master
              
-                 echo "Etapa Promote finalizada"
+                  echo "Etapa Promote finalizada"
                '''
             }
             
