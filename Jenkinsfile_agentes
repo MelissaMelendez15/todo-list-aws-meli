@@ -221,6 +221,11 @@ pipeline {
             }
        
             steps {
+               sh '''
+                  echo "Usuario: $(whoami)"
+                  echo "Hostname: $(hostname)"
+                  echo "WORKSPACE: ${WORKSPACE}"
+               '''
                echo 'Limpiando Workspace con agente personalizado'
                cleanWs()
             }
