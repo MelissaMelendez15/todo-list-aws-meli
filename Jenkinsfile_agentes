@@ -129,7 +129,7 @@ pipeline {
         stage('Rest Test') {
            agent {
               docker {
-                 image 'melissa15/python-pytest:1.4'
+                 image 'melissa15/python-pytest:1.5'
                  reuseNode true
                  args '--entrypoint=""'
                 }
