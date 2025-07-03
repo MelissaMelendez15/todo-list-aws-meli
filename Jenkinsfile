@@ -22,7 +22,6 @@ pipeline {
                    credentialsId: 'GITHUB_CREDENTIALS_MELI'
                 ]]
               ])
-              
               sh '''
                 echo "Descargando configuración desde repo externo..."
                 curl -o samconfig.toml https://raw.githubusercontent.com/MelissaMelendez15/todo-list-aws-config/staging/samconfig.toml
@@ -77,7 +76,7 @@ pipeline {
                   sam validate --region us-east-1
 
                   echo "Desplegando recursos a serverlees al entorno de Staging..."
-                  sam deploy --no-fail-on-empty-changeset --parameter-overrides Stage=$STAGE
+                  sam deploy --no-fail-on-empty-changeset
              '''
             }
         }
