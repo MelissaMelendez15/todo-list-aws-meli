@@ -55,7 +55,7 @@ pipeline {
        stage('Static') {
           agent {
              docker {
-                 image 'melissa15/python-static-checker:1.0'
+                 image 'melissa15/python-static-checker:1.1'
                  reuseNode true
             }
         }
