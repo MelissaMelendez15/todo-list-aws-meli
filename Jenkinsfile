@@ -70,31 +70,31 @@ pipeline {
             sam --version || echo "SAM no funciona aquí"
                   
             echo "Construyendo el paquete SAM..."
-                  sam build
+            sam build
 
             echo "Validando la plantilla SAM..."
             sam validate --region us-east-1
 
             echo "Desplegando recursos a serverlees al entorno de Staging..."
-          '''
-            }
+         '''
+      }
          
-         }
+   }
         
-        stage('Rest Test') {
-            steps {
-               sh '''
-                  echo "Ejecutando pruebas de integración REST solo LECTURA (GET)..."
+   stage('Rest Test') {
+      steps {
+        sh '''
+            echo "Ejecutando pruebas de integración REST solo LECTURA (GET)..."
                   
-                  mkdir -p test-reports
+            mkdir -p test-reports
                   
-                  docker run --rm \
-                    -e BASE_URL="$BASE_URL_STAGING" \
-                    -v "$WORKSPACE:/app" \
-                    melissa15/python-pytest:1.5 \
-                   -v test/integration/todoApiTest.py \
-                   --junitxml=/app/test-reports/pytest-report.xml
-             '''
+            docker run --rm \
+              -e BASE_URL="$BASE_URL_STAGING" \
+              -v "$WORKSPACE:/app" \
+               melissa15/python-pytest:1.5 \
+               -v test/integration/todoApiTest.py \
+               --junitxml=/app/test-reports/pytest-report.xml
+            '''
              
              junit 'test-reports/pytest-report.xml'
             
@@ -102,17 +102,17 @@ pipeline {
         }
 
         
-        stage('Promote') {
-          steps {
+   stage('Promote') {
+     steps {
           
-            withCredentials([usernamePassword(
-               credentialsId: 'GITHUB_CREDENTIALS_MELI', 
-               usernameVariable: 'GIT_USER', 
-               passwordVariable: 'GIT_PASS')]) {
+        withCredentials([usernamePassword(
+        credentialsId: 'GITHUB_CREDENTIALS_MELI', 
+        usernameVariable: 'GIT_USER', 
+        passwordVariable: 'GIT_PASS')]) {
              
-             sh  '''
-               echo "Promoviendo release..."
-               git config user.name "jenkins"
+         sh  '''
+              echo "Promoviendo release..."
+              git config user.name "jenkins"
                git config user.email "jenkins@localhost"
                
                echo "Descartando cambios locales..."
@@ -136,11 +136,11 @@ pipeline {
           }
         }
         
-    }
+   }
     
-    post {
-       always {
-           cleanWs()
+   post {
+     always {
+        cleanWs()
        }
     }
 
