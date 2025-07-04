@@ -52,13 +52,7 @@ pipeline {
        
        }
        
-       stage('Identificador') {
-          steps {
-             echo "🔥 Ejecutando Jenkinsfile de la rama develop (CI)"
-         }
-       }
-       
-       stage('Static') {
+      stage('Static') {
           agent {
              docker {
                  image 'melissa15/python-static-checker:1.1'
