@@ -32,46 +32,51 @@ pipeline {
                 ls -l samconfig.*
                 cat samconfig.toml
               '''
-            }
+      }
        
-       }
+   }
        
-       stage('Static') {
-          steps {
-            sh  '''
-                 echo "Ejecutando Flake8..."
-                 flake8 src/ --exit-zero --format=default > flake8-report.txt || true
-                 
-                 echo "Ejecutando Bandit..."
-                 bandit -r src/ -f txt -o bandit-report.txt || true
-             '''
-             
-             recordIssues tools: [flake8(pattern: 'flake8-report.txt')]
-             archiveArtifacts artifacts: 'bandit-report.txt', fingerprint:true
-            
-            }
-        }
+   stage('Static') {
+      agent {
+        docker {
+           image 'melissa15/python-static-checker:1.1'
+           reuseNode true
+         }
+      }
+      steps {
+        sh '''
+         echo "Ejecutando Flake8..."
+         flake8 src/ --exit-zero --format=default > flake8-report.txt || true
+         
+         echo "Ejecutando Bandit..."
+         bandit -r src/ -f txt -o bandit-report.txt || true
+       '''
+       recordIssues tools: [flake8(pattern: 'flake8-report.txt')]
+       archiveArtifacts artifacts: 'bandit-report.txt', fingerprint: true
+         
+      }
+   }
 
-        stage('Deploy') {
-           steps {
-             sh  '''
-                  echo "Usuario actual:"
-                  whoami || echo "No se pudo obtner el usuario"
+   stage('Deploy') {
+     steps {
+       sh  '''
+            echo "Usuario actual:"
+            whoami || echo "No se pudo obtner el usuario"
                   
-                  echo "Ruta de SAM CLI:"
-                  which sam || echo "SAM no está en el PATH"
+            echo "Ruta de SAM CLI:"
+            which sam || echo "SAM no está en el PATH"
                   
-                  echo "Probando versión de SAM:"
-                  sam --version || echo "SAM no funciona aquí"
+            echo "Probando versión de SAM:"
+            sam --version || echo "SAM no funciona aquí"
                   
-                  echo "Construyendo el paquete SAM..."
+            echo "Construyendo el paquete SAM..."
                   sam build
 
-                  echo "Validando la plantilla SAM..."
-                  sam validate --region us-east-1
+            echo "Validando la plantilla SAM..."
+            sam validate --region us-east-1
 
-                  echo "Desplegando recursos a serverlees al entorno de Staging..."
-               '''
+            echo "Desplegando recursos a serverlees al entorno de Staging..."
+          '''
             }
          
          }
