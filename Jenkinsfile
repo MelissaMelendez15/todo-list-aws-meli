@@ -8,7 +8,7 @@ pipeline {
    
    environment {
        GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
-       BASE_URL_PROD = credentials('BASE_URL_PROD')
+       BASE_URL_STAGING = credentials('BASE_URL_STAGING')
        STAGE = 'production'
    }
    
@@ -53,8 +53,7 @@ pipeline {
         }
 
         stage('Deploy') {
-          
-          steps {
+           steps {
              sh  '''
                   echo "Usuario actual:"
                   whoami || echo "No se pudo obtner el usuario"
@@ -72,7 +71,7 @@ pipeline {
                   sam validate --region us-east-1
 
                   echo "Desplegando recursos a serverlees al entorno de Staging..."
-            
+               '''
             }
          
          }
@@ -85,9 +84,9 @@ pipeline {
                   mkdir -p test-reports
                   
                   docker run --rm \
-                    -e BASE_URL="$BASE_URL_PROD" \
+                    -e BASE_URL="$BASE_URL_STAGING" \
                     -v "$WORKSPACE:/app" \
-                    melissa15/python-pytest:1.0 \
+                    melissa15/python-pytest:1.5 \
                    -v test/integration/todoApiTest.py \
                    --junitxml=/app/test-reports/pytest-report.xml
              '''
