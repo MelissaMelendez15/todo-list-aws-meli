@@ -84,7 +84,7 @@ pipeline {
    stage('Rest Test') {
       steps {
         sh '''
-            echo "Ejecutando pruebas de integración REST solo LECTURA (GET)..."
+            echo "Ejecutando pruebas de integración REST completas (GET, POST, PUT, DELETE)..."
                   
             mkdir -p test-reports
                   
