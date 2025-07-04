@@ -51,12 +51,6 @@ pipeline {
         
       }
       
-      stage('Identificador') {
-          steps {
-             echo "🔥 Ejecutando Jenkinsfile de la rama develop (CI)"
-         }
-       }
-      
       stage('Deploy') {
         agent {
           docker {
