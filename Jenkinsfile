@@ -1,11 +1,12 @@
 pipeline {
-
-    agent any
-    options {
+   
+   agent any
+   
+   options {
         skipDefaultCheckout(true)
     }
-    
-    environment {
+   
+   environment {
        GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
        BASE_URL_PROD = credentials('BASE_URL_PROD')
        STAGE = 'production'
@@ -16,16 +17,19 @@ pipeline {
          steps {
             checkout([
                $class: 'GitSCM',
-               branches: [[name: '*/master']],
+               branches: [[name: '*/develop']],
                userRemoteConfigs: [[
                    url: 'https://github.com/MelissaMelendez15/todo-list-aws-meli.git',
                    credentialsId: 'GITHUB_CREDENTIALS_MELI'
                 ]]
               ])
+              
               sh '''
-                echo "Descargando configuración desde repo externo..."
+                echo "Descargando configuración desde repo externo (staging)..."
                 curl -o samconfig.toml https://raw.githubusercontent.com/MelissaMelendez15/todo-list-aws-config/staging/samconfig.toml
+                
                 echo "Contenido del samconfig.toml descargando:"
+                ls -l samconfig.*
                 cat samconfig.toml
               '''
             }
@@ -33,15 +37,7 @@ pipeline {
        }
        
        stage('Static') {
-          agent {
-             docker {
-                 image 'melissa15/python-static-checker:1.0'
-                 reuseNode true
-            }
-        }
-          
           steps {
-             
             sh  '''
                  echo "Ejecutando Flake8..."
                  flake8 src/ --exit-zero --format=default > flake8-report.txt || true
@@ -52,7 +48,7 @@ pipeline {
              
              recordIssues tools: [flake8(pattern: 'flake8-report.txt')]
              archiveArtifacts artifacts: 'bandit-report.txt', fingerprint:true
-    
+            
             }
         }
 
@@ -76,10 +72,10 @@ pipeline {
                   sam validate --region us-east-1
 
                   echo "Desplegando recursos a serverlees al entorno de Staging..."
-                  sam deploy --no-fail-on-empty-changeset
-             '''
+            
             }
-        }
+         
+         }
         
         stage('Rest Test') {
             steps {
@@ -127,6 +123,8 @@ pipeline {
                
                echo "Pusheando a master..."
                git push https://${GIT_USER}:${GIT_PASS}@github.com/MelissaMelendez15/todo-list-aws-meli.git master
+               
+               echo "Etapa Promote finalizada"
             
             '''
             }
