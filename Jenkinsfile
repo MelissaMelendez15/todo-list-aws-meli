@@ -70,7 +70,7 @@ pipeline {
                   docker run --rm \
                       -e BASE_URL="$BASE_URL_PROD" \
                       -v "$WORKSPACE:/app" \
-                      melissa15/python-pytest:1.0 \
+                      melissa15/python-pytest:1.5 \
                       -v test/integration/todoApiReadOnlyTest.py \
                       --junitxml=/app/test-reports/pytest-report.xml
                  '''
