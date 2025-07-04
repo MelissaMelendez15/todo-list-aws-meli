@@ -142,6 +142,7 @@ pipeline {
             steps {
                
                sh '''
+                  echo "===Clean Workspace==="
                   echo "Usuario: $(whoami)"
                   echo "Hostname: $(hostname)"
                   echo "WORKSPACE: ${WORKSPACE}"
