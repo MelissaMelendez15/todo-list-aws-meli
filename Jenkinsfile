@@ -9,7 +9,7 @@ pipeline {
    environment {
        GITHUB_CREDENTIALS_MELI = credentials('GITHUB_CREDENTIALS_MELI')
        BASE_URL_STAGING = credentials('BASE_URL_STAGING')
-       STAGE = 'production'
+       STAGE = 'staging'
    }
    
    stages {

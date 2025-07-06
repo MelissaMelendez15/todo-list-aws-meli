@@ -211,8 +211,7 @@ pipeline {
           }
         }
        
-       
-       stage ('Clean Workspace') {
+        stage ('Clean Workspace') {
           agent {
              docker {
                  image 'melissa15/cleaner-agent:1.1'
